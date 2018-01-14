@@ -1,0 +1,35 @@
+{
+  "name": "Easy Hiragana",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Input romaji in google translate will automatically be turned into hiragana, no Japanese keyboard required",
+
+  "icons": {
+    "48": "ez48.png",
+    "128": "ez128.png"
+  },
+
+  "browser_action": {
+    "default_icon": "ez128.png",
+    "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [ "*://www.google.ca/search?q=google+translate*" ],
+      "js": [ "jquery-3.2.1.min.js", "content.js" ]
+    },
+    {
+      "matches": [ "*://translate.google.ca/*" ],
+      "js": [ "jquery-3.2.1.min.js", "mainpage.js" ]
+    },
+    {
+      "matches": [ "*://www.google.com/search?q=google+translate*" ],
+      "js": [ "jquery-3.2.1.min.js", "content.js" ]
+    },
+    {
+      "matches": [ "*://translate.google.com/*" ],
+      "js": [ "jquery-3.2.1.min.js", "mainpage.js" ]
+    }
+  ]
+}
