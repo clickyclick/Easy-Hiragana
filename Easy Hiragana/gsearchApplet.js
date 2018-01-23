@@ -1,9 +1,9 @@
 //Easy Hiragana by Aidan Wilson
 
 //finds the id-less element to detect language
-function findFirst(parent, tagname) {
+function findFirst(parent, name) {
     var parent = document.getElementById(parent);
-    var daughters = parent.getElementsByTagName(tagname);
+    var daughters = parent.getElementsByTagName(name);
     if (daughters.length)
         return daughters[0];
     return null;
@@ -14,24 +14,35 @@ var lang = "ja";//japanese
 var lst = findFirst('_fVd', 'select');
 var currLang = lst.options[lst.selectedIndex].value;
 
+var txtfield = document.getElementById('tw-source-text-ta');
+
 $('#_fVd').on('change', function () { //triggers if langauge changes
+
+    //revalidate language
     lst = findFirst('_fVd', 'select');
     currLang = lst.options[lst.selectedIndex].value;
 
-
-
-    $('#tw-source-text-ta').on('input', function () { //triggers on all input into box 
-        if (this.value.length > 0 && currLang == lang) {
-            this.value = convert(this.value); //changes the textfield to the converted version
-            console.error(currLang);
-        }
-    });
-
-
+    if (txtfield.value.length > 0 && currLang == lang) {
+        txtfield.value = convert(txtfield.value); //changes the textfield to the converted version
+    }
 
 });
 
-//converts the txt to hiragana
+$('#tw-source-text-ta').on('input', function () { //triggers on all input into box 
+
+    //revalidate language
+    lst = findFirst('_fVd', 'select');
+    currLang = lst.options[lst.selectedIndex].value;
+
+    if (this.value.length > 0 && currLang == lang) {
+        this.value = convert(this.value); //changes the textfield to the converted version
+ 
+    }
+});
+
+
+
+//converts the txt to hiragana 
 function convert(txt) {
     var temp = '';
     var left = 0;
