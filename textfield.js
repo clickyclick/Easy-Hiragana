@@ -2,21 +2,23 @@
 //Listeners
 
 console.log("OKLOL");
-var target = null;
+var target;
 var state;
 
 
 //set target to last clicked element TODO make it last clicked textfield
-document.addEventListener("mousedown", function (event) {
+//document.addEventListener("mousedown", function (event) {
     //left click
-    if (event.button == 0) {
-        target = event.target;
-        console.log(target);
-    }
-}, true);
+//    if (event.button == 0) {
+ //       target = event.target;
+ //       console.log(target);
+ //   }
+//}, true);
 
 //on key input do some conversion if conditions are met
 document.addEventListener("keyup", function (event) {
+    target = event.target;
+    console.log(target.id);
     console.log("Breakpoint");
     converter(target);
 }, true);
