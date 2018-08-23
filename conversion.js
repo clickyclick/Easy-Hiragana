@@ -337,7 +337,7 @@ function convertToHiragana(text) {
                     i++;
                     continue;
                 } else if (text[i + 1] == 'i') {//gi
-                    temp = temp + '\u304C';
+                    temp = temp + '\u304E';
                     i++;
                     continue;
                 } else if (text[i + 1] == 'u') {//gu

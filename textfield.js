@@ -1,7 +1,6 @@
 ﻿// conversion.js By Aidan Wilson 2018/08/01
 //Listeners
 
-console.log("OKLOL");
 var target;
 var state;
 
@@ -37,8 +36,8 @@ function getState() {
 //a sync that calls the conversion logic
 async function converter(target) {
     var state = await getState();
-    console.log("A SYNC complete: " + state);
-    if (state && target.tagName == "TEXTAREA") {
+	//will work if in correct state and it is textfield or input but not password
+    if (state && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type == "password") {
         target.value = convertToHiragana(target.value);
     }
 }
