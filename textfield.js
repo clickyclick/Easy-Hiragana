@@ -17,8 +17,8 @@ var state;
 //on key input do some conversion if conditions are met
 document.addEventListener("keyup", function (event) {
     target = event.target;
-    console.log(target.id);
-    console.log("Breakpoint");
+    //console.log(target.id);
+    //console.log("Breakpoint");
     converter(target);
 }, true);
 
@@ -26,8 +26,8 @@ document.addEventListener("keyup", function (event) {
 function getState() {
     return new Promise(resolve => {
         chrome.storage.local.get(['status'], function (result) {
-            console.log(result.status);
-            console.log("DID");
+            //console.log(result.status);
+            //console.log("DID");
             resolve(result.status);
         });
     });
@@ -37,7 +37,7 @@ function getState() {
 async function converter(target) {
     var state = await getState();
 	//will work if in correct state and it is textfield or input but not password
-    if (state && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type == "password") {
+    if (state && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type != "password") {
         target.value = convertToHiragana(target.value);
     }
 }
