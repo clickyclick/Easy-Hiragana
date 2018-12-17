@@ -1,18 +1,9 @@
 ﻿// conversion.js By Aidan Wilson 2018/08/01
-//Listeners
 
 var target;
-var state;
+var stateH;
+var stateK;
 
-
-//set target to last clicked element TODO make it last clicked textfield
-//document.addEventListener("mousedown", function (event) {
-    //left click
-//    if (event.button == 0) {
- //       target = event.target;
- //       console.log(target);
- //   }
-//}, true);
 
 //on key input do some conversion if conditions are met
 document.addEventListener("keyup", function (event) {
@@ -23,22 +14,39 @@ document.addEventListener("keyup", function (event) {
 }, true);
 
 //promise for status update
-function getState() {
+function getStateH() {
     return new Promise(resolve => {
-        chrome.storage.local.get(['status'], function (result) {
-            //console.log(result.status);
-            //console.log("DID");
-            resolve(result.status);
+        chrome.storage.local.get(['statusH'], function (result) {
+           // console.log(result.status);
+           // console.log("DID");
+            resolve(result.statusH);
+        });
+    });
+}
+function getStateK() {
+    return new Promise(resolve => {
+        chrome.storage.local.get(['statusK'], function (result) {
+           // console.log(result.status);
+           // console.log("DID");
+            resolve(result.statusK);
         });
     });
 }
 
 //a sync that calls the conversion logic
 async function converter(target) {
-    var state = await getState();
+    var stateH = await getStateH();
+    var stateK = await getStateK();
 	//will work if in correct state and it is textfield or input but not password
-    if (state && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type != "password") {
-        target.value = convertToHiragana(target.value);
+    if (stateH && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type != "password") {
+        //target.value = convertToHiragana(target.value);
+        wanakana.bind(target,{ IMEMode: 'toHiragana' });
+    }
+    else if (stateK && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type != "password") {
+        //target.value = convertToHiragana(target.value);
+        wanakana.bind(target,{ IMEMode: 'toKatakana' });
+    }else{
+       // wanakana.unbind(target);
     }
 }
 
