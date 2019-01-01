@@ -1,6 +1,7 @@
 ﻿// conversion.js By Aidan Wilson 2018/08/01
 
 var target;
+var active;
 var stateH;
 var stateK;
 
@@ -40,13 +41,24 @@ async function converter(target) {
 	//will work if in correct state and it is textfield or input but not password
     if (stateH && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type != "password") {
         //target.value = convertToHiragana(target.value);
+        if (active!=null){
+            wanakana.unbind(active);
+        }
         wanakana.bind(target,{ IMEMode: 'toHiragana' });
+        active=target;
     }
     else if (stateK && (target.tagName == "TEXTAREA" || target.tagName == "INPUT") && target.type != "password") {
         //target.value = convertToHiragana(target.value);
+        if (active!=null){
+            wanakana.unbind(active);
+        }
         wanakana.bind(target,{ IMEMode: 'toKatakana' });
+        active=target;
     }else{
-       // wanakana.unbind(target);
+        if (active!=null){
+            wanakana.unbind(active);
+            active =null;
+        }
     }
 }
 
