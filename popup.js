@@ -43,10 +43,10 @@ document.getElementById("toggleHiragana").addEventListener("change", function (e
         console.log('Value currently set to ' + hiraganaState);
 
         //sends message to content script
-        //chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-           // var activeTab = tabs[0];
-          //  chrome.tabs.sendMessage(activeTab.id, { "state": state });
-        //});
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+            var activeTab = tabs[0];
+            chrome.tabs.sendMessage(activeTab.id, { "unbind": true });
+        });
     });
 
 
