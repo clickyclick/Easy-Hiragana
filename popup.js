@@ -1,15 +1,27 @@
 ﻿
-var state;
+var hiraganaState;
+var katakanaState;
 
 //gets the status to set the checkbox too
-chrome.storage.local.get(['status'], function (result) {
-    console.log('Value currently is ' + result.status);
-    state = result.status;
+chrome.storage.local.get(['statusH'], function (result) {
+    //console.log('Value currently is ' + result.status);
+    hiraganaState = result.statusH;
 
-    if (state) {
+    if (hiraganaState) {
         document.getElementById("toggleHiragana").checked = true;
     } else {
         document.getElementById("toggleHiragana").checked = false;
+    }
+});
+
+chrome.storage.local.get(['statusK'], function (result) {
+    //console.log('Value currently is ' + result.status);
+    hiraganaState = result.statusK;
+
+    if (hiraganaState) {
+        document.getElementById("toggleKatakana").checked = true;
+    } else {
+        document.getElementById("toggleKatakana").checked = false;
     }
 });
 
@@ -17,17 +29,54 @@ chrome.storage.local.get(['status'], function (result) {
 //if checkbox changes we need to update the internal status
 document.getElementById("toggleHiragana").addEventListener("change", function (event) {
 
-    state = document.getElementById("toggleHiragana").checked
+    //mutual exclusion
+    if (document.getElementById("toggleHiragana").checked==true  && document.getElementById("toggleKatakana").checked==true){
+        document.getElementById("toggleKatakana").checked=false;
+        chrome.storage.local.set({ statusK: false }, function () {
+        });
+    
+    }
 
-    chrome.storage.local.set({ status: state }, function () {
-        console.log('Value currently set to ' + state);
+    hiraganaState = document.getElementById("toggleHiragana").checked;
+
+    chrome.storage.local.set({ statusH: hiraganaState }, function () {
+        //console.log('Value currently set to ' + hiraganaState);
 
         //sends message to content script
-        //chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-           // var activeTab = tabs[0];
-          //  chrome.tabs.sendMessage(activeTab.id, { "state": state });
-        //});
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+            var activeTab = tabs[0];
+            chrome.tabs.sendMessage(activeTab.id, { "unbind": true });
+        });
     });
 
 
 });
+
+document.getElementById("toggleKatakana").addEventListener("change", function (event) {
+    //mutual exclusion
+    if (document.getElementById("toggleHiragana").checked==true  && document.getElementById("toggleKatakana").checked==true){
+        document.getElementById("toggleHiragana").checked=false;
+        chrome.storage.local.set({ statusH: false }, function () {
+        });
+    
+    }
+
+    katakanaState = document.getElementById("toggleKatakana").checked;
+
+    chrome.storage.local.set({ statusK: katakanaState }, function () {
+        //console.log('Value currently set to ' + katakanaState);
+
+        //sends message to content script
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+            var activeTab = tabs[0];
+            chrome.tabs.sendMessage(activeTab.id, { "unbind": true });
+        });
+    });
+
+
+});
+
+//known issues:
+// multiple tabs and you swithc from hiragana to katakana first character is messed up on all but one
+
+//converts english that was typed earlier in the textfield when hiragana/ katakana was off
