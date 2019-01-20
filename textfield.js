@@ -58,7 +58,7 @@ async function converter(target) {
 //messages from popup
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        console.log('Value currently set to ' + request.unbind);
+        //console.log('Value currently set to ' + request.unbind);
         if (active!=null){
             wanakana.unbind(active);
             active=null;

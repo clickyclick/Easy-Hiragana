@@ -40,7 +40,7 @@ document.getElementById("toggleHiragana").addEventListener("change", function (e
     hiraganaState = document.getElementById("toggleHiragana").checked;
 
     chrome.storage.local.set({ statusH: hiraganaState }, function () {
-        console.log('Value currently set to ' + hiraganaState);
+        //console.log('Value currently set to ' + hiraganaState);
 
         //sends message to content script
         chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -64,14 +64,19 @@ document.getElementById("toggleKatakana").addEventListener("change", function (e
     katakanaState = document.getElementById("toggleKatakana").checked;
 
     chrome.storage.local.set({ statusK: katakanaState }, function () {
-        console.log('Value currently set to ' + katakanaState);
+        //console.log('Value currently set to ' + katakanaState);
 
         //sends message to content script
-        //chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-           // var activeTab = tabs[0];
-          //  chrome.tabs.sendMessage(activeTab.id, { "state": state });
-        //});
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+            var activeTab = tabs[0];
+            chrome.tabs.sendMessage(activeTab.id, { "unbind": true });
+        });
     });
 
 
 });
+
+//known issues:
+// multiple tabs and you swithc from hiragana to katakana first character is messed up on all but one
+
+//converts english that was typed earlier in the textfield when hiragana/ katakana was off
